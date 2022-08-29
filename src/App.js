@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-// import ReactDOM from 'react-dom';
 import { useForm } from "react-hook-form";
 import './App.scss';
 import {
@@ -94,7 +92,7 @@ const TodoList = () => {
                       onChange={() => doneList(item.id)} checked={item.checked} />
                     <span>{item.title}</span>
                   </label>
-                  <a onClick={() => delItem(item.id)}>
+                  <a href="#" onClick={() => delItem(item.id)}>
                   <FaRegTimesCircle />
                   </a>
                 </li>
