@@ -94,7 +94,7 @@ const TodoList = () => {
                       onChange={() => doneList(item.id)} checked={item.checked} />
                     <span>{item.title}</span>
                   </label>
-                  <a onClick={() => delItem(item.id)}>
+                  <a href="#" onClick={() => delItem(item.id)}>
                   <FaRegTimesCircle />
                   </a>
                 </li>
