@@ -625,3 +625,12 @@ nav ul a span {
     position: relative;
     top: -5px;
 }
+
+.not_found {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #333;
+  }
