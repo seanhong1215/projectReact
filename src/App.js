@@ -17,7 +17,7 @@ function App() {
     }, [location]);
 
     return ( 
-    <div className = "container" >
+    <div className ="container">
       <AuthContext.Provider value = {{ token, setToken }}>
         <Routes >
           <Route element = {<ProtectedRoute /> } >
