@@ -1,36 +1,37 @@
 // import React, { useState, useEffect } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import { useNavigate, NavLink } from 'react-router-dom';
+import { useAuth } from '../utils/context';
+import { sweetAlert, showToast } from '../utils/sweetalert';
 import { useForm } from "react-hook-form";
 import * as api from "../utils/api.js";
 
 
 const Register = () => {
-    const navigate = useNavigate()
-    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const navigate = useNavigate();
+  const { setToken } = useAuth();
     const onError = (errors, e) => console.log(errors, e);
     const onSubmit = data => {
+      const { email, password, nickname } = data
         api.register({
-            user: data
+            user: {
+              email: email, 
+              nickname: nickname,
+              password: password
+            }
           }).then((res)=>{
-          console.log(res.data.message)
+            console.log(res.data.message)
+            console.log(res)
+            setToken(res.headers.authorization)
+            console.log(setToken(res.headers.authorization))
+            
+            showToast('註冊成功', 'success')
+            navigate('/login', { replace: true })
+            reset({ email: '', password: '', nickname: '' })
 
-          
-          
-          if (res.data.message === "註冊成功") {
-            Swal.fire({
-              icon: 'success',
-              title: data.message,
-              confirmButtonText: '前往登入',
-            })
-            navigate('/login')
-
-          }
-
-          reset({ email: '', password: '', nickname: '' })
-
-          }).catch((error)=>{
-            console.log(error)
+          }).catch((err)=>{
+            console.log(err)
+            sweetAlert(err.response.data.message, err.response.data.error[0] , 'warning')
             reset({ password: '' })
           })
     };

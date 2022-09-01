@@ -3,43 +3,51 @@ import { FaPlus } from "react-icons/fa"
 import { FaRegTimesCircle } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../utils/context'
+import { showToast } from '../utils/sweetalert'
+
 import * as api from "../utils/api.js";
 
 
 const TodoList = () => {
-  const { token, setToken } = useAuth()
+  const { setToken } = useAuth()
   const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  // console.log(token)
+
+  const logOut = (e) => {
+    showToast("success", "登出成功！", "掰掰囉～記得再回來確認ToDoList唷！");
+    window.setTimeout(() => {
+      localStorage.removeItem('token')
+      navigate("/login");
+      window.localStorage.clear();
+    }, 3000);
+  };
+  
 
   const SignUp = () => {
-    console.log('帳號登出')
-    api.signUp().then((res)=>{
-      console.log(res.data.message)
+    api.signUp({
+      Authorization: token
+    }).then((res)=>{
+      console.log(res)
+      showToast('您已登出', 'success')
       localStorage.removeItem('token')
-      setToken('')
+      // setToken(res.headers.authorization)
+      console.log(res.data.message)
       navigate('/login')
-
-      }).catch((error)=>{
-        console.log(error)
       })
   }
 
   const GetTodos = () => {
     console.log('todos列表')
-    api.GetTodos().then((res)=>{
-      console.log(res.data.message)
-
-      
+    api.GetTodos({
+      Authorization: token
+    }).then((res)=>{
+      console.log(res)
       }).catch((error)=>{
         console.log(error)
-        if (error.res.status === 401) {
-          setTimeout(() => {
-            localStorage.removeItem('token')
-            setToken('')
-            navigate('/login')
-          }, 1500);
-        }
       })
   }
+
 
   const PostTodos = () => {
     console.log('新增todos')
@@ -223,7 +231,7 @@ const TodoList = () => {
           <ul>
             <li className="todo_sm">
               <a href="#">
-                <span>王小明的代辦</span>
+                <span>XXX的代辦</span>
               </a>
             </li>
             <li>

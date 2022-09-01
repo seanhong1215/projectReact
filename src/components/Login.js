@@ -1,38 +1,36 @@
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import Swal from 'sweetalert2'
 import { useAuth } from '../utils/context'
+import { sweetAlert, showToast } from '../utils/sweetalert'
 import * as api from "../utils/api.js";
 
 
 const Login = () => {
-    const { setToken } = useAuth()
+    const { setToken, setUserName } = useAuth()
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onError = (errors, e) => console.log(errors, e);
   
     const onSubmit = data => {
+      const { email, password } = data
         api.signIn({
-            user: data
+            user: {
+              email: email, 
+              password: password
+            }
           }).then((res)=>{
           console.log(res.data.message)
           // save token
-            setToken(api.header.headers.Authorization)
-            localStorage.setItem('token', api.header.headers.Authorization)
-            console.log(setToken(api.header.headers.Authorization))
-            console.log(localStorage.setItem('token', api.header.headers.Authorization))
+            setToken(res.headers.authorization)
+          console.log(setToken(res.headers.authorization))
 
-          Swal.fire({
-            icon: 'success',
-            title: data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          })
-          navigate('/')
+            localStorage.setItem('token', res.headers.authorization)
+            showToast('登入成功', 'success')
+            navigate('/', { replace: true })
 
-
-          }).catch((error)=>{
-            console.log(error)
+          }).catch((err)=>{
+            console.log(err)
+            sweetAlert(err.response.data.message , '帳號或密碼錯誤', 'warning')
             reset({ password: '' })
           })
     };
