@@ -18,12 +18,14 @@ const Register = () => {
         const result = Swal.fire({
           icon: 'success',
           title: data.message,
-          confirmButtonText: '前往登入',
+          showConfirmButton: false,
+          timer: 1500,
+          // confirmButtonText: '前往登入',
         })
           if (result.isConfirmed) {
             navigate('/login')
           }
-          reset({ email: '', password: '', confirm_password: '', nickname: '' })
+          reset({ email: '', password:'', nickname: '' })
 
           } catch(err) {
               console.log(err)

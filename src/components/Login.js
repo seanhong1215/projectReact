@@ -26,7 +26,7 @@ const Login = () => {
             icon: 'success',
             title: data.message,
             showConfirmButton: false,
-            timer: 1000,
+            timer: 1500,
           })
           // console.log(data)
           navigate('/')

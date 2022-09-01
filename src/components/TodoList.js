@@ -25,7 +25,6 @@ const TodoList = () => {
   }
 
 // api
-console.log(useAuth())
 const GetTodos = async () => {
   try {
     const { data } = await api({
@@ -41,7 +40,6 @@ const GetTodos = async () => {
       content: item.content,
       checked: item.checked ? true : false,
     }))
-    // console.log(data.todos)
     setTodolist(list)
   } catch (error) {
     console.error(error)
@@ -162,7 +160,6 @@ useEffect(() => {
       // 完成事項
       const doneTodoList = (id) => {
         const newTodoList = [...todoList];
-        console.log(newTodoList)
         newTodoList.map((item) => {
           if (item.id === id) {
             item.checked = !item.checked;
